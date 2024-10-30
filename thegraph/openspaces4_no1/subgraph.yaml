@@ -1,0 +1,31 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFTmk
+    network: sepolia
+    source:
+      address: "0x3F2ccfB0bc6b2B26243B141BD14c03260cAe3119"
+      abi: NFTmk
+      startBlock: 6974143
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - sellOrder
+        - buyOreder
+      abis:
+        - name: NFTmk
+          file: ./abis/NFTmk.json
+      eventHandlers:
+        - event: Cancel(bytes32)
+          handler: handleCancel
+        - event: List(indexed address,indexed uint256,bytes32,address,address,uint256,uint256)
+          handler: handleList
+        - event: Sold(bytes32,address,uint256)
+          handler: handleSold
+      file: ./src/nf-tmk.ts
